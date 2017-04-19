@@ -11,6 +11,7 @@ public class PreProcessReducer extends Reducer<MyKey,Text,Text,NullWritable> {
                      Context context
   ) throws IOException, InterruptedException {
     for(Text val: values){
+    	if(!val.toString().equals(" "))
       context.write(val, NullWritable.get());
     }
   }

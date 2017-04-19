@@ -1,2 +1,8 @@
 /bin/
 /target/
+
+*.crc
+
+*.csv
+
+output/part-r-00003
