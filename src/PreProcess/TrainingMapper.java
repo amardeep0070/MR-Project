@@ -41,7 +41,7 @@ class TrainingMapper extends Mapper<LongWritable, Text, NullWritable, Classifier
 			Configuration conf = context.getConfiguration();
 			Path files[] = DistributedCache.getLocalCacheFiles(conf);
 			File trainFile = new File(temp[1]);
-			File testFile= new File("part-r-00005");
+			//File testFile= new File("part-r-00005");
 			if (trainFile == null) {
 				throw new RuntimeException(
 						"No File In DistributedCache");
@@ -83,8 +83,11 @@ class TrainingMapper extends Mapper<LongWritable, Text, NullWritable, Classifier
 			arffDataSet.setClassIndex(arffDataSet.numAttributes() - 1);
 			String classifierToUse = temp[0];
 			ClassifierWrapper classifierUsed = new ClassifierWrapper();
-			if (classifierToUse.equals("J48")) {
+			if (classifierToUse.equals("IBK")) {
 				classifierUsed.setClassifier(new IBk(2));
+			}
+			if (classifierToUse.equals("J48")) {
+				classifierUsed.setClassifier(new J48());
 			}
 //			classifierUsed.getClassifier().buildClassifier(arffDataSet);
 //			Evaluation eval = new Evaluation(arffDataSet);

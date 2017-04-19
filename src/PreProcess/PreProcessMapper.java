@@ -19,7 +19,7 @@ public class PreProcessMapper extends Mapper<LongWritable, Text, MyKey, Text> {
     //		numberOfPages = Long.parseLong(conf.get("numberOfPages"));
     //		delta=Long.parseLong(conf.get("delta"));
     //TODO get number of models from config
-    numberOfModels=5;
+    numberOfModels=4;
 
   }
   public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
@@ -41,8 +41,11 @@ public class PreProcessMapper extends Mapper<LongWritable, Text, MyKey, Text> {
       output="";
       for(int k:columnsOfInterest){
         String temp=columnContent[k].trim();
-        if( k==26 && Integer.parseInt(columnContent[k].trim())>0 ){
+        if(k==26 && !temp.equalsIgnoreCase("X")&& Double.parseDouble(columnContent[k].trim())>0 ){
           temp="1";
+        }
+        if(k==26 && temp.equalsIgnoreCase("X")){
+        	temp="0";
         }
         output=output+","+temp;
       }
