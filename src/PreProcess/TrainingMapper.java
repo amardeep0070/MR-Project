@@ -84,7 +84,7 @@ class TrainingMapper extends Mapper<LongWritable, Text, NullWritable, Classifier
 			String classifierToUse = temp[0];
 			ClassifierWrapper classifierUsed = new ClassifierWrapper();
 			if (classifierToUse.equals("IBK")) {
-				classifierUsed.setClassifier(new IBk(2));
+				classifierUsed.setClassifier(new IBk(Integer.parseInt(temp[2])));
 			}
 			if (classifierToUse.equals("J48")) {
 				classifierUsed.setClassifier(new J48());

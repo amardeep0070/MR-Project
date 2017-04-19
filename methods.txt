@@ -1,2 +1,5 @@
 J48 part-r-00000
-IBK part-r-00001
+IBK part-r-00001 2
+IBK part-r-00002 4
+IBK part-r-00003 6
+IBK part-r-00004 3
