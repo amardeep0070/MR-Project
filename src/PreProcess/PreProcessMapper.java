@@ -45,7 +45,7 @@ public class PreProcessMapper extends Mapper<LongWritable, Text, MyKey, Text> {
           temp="1";
         }
         if(k==26 && temp.equalsIgnoreCase("X")){
-        	temp="0";
+        	temp="1";
         }
         output=output+","+temp;
       }

@@ -59,6 +59,7 @@ public class Driver {
 		FileOutputFormat.setOutputPath(training,
 				new Path
 				(otherArgs[otherArgs.length - 1] +"/Models"));
+		training.setNumReduceTasks(0);
 		training.setInputFormatClass(NLineInputFormat.class);
 		NLineInputFormat.addInputPath(training, new
 				Path("methods.txt"));
@@ -79,7 +80,7 @@ public class Driver {
 		predict.setJarByClass(Driver.class);
 		predict.setMapperClass(PredictorMapper.class);
 		predict.setReducerClass(PredictorReducer.class);
-		predict.setNumReduceTasks(1);
+		//predict.setNumReduceTasks(1);
 		predict.setMapOutputKeyClass(IntWritable.class);
 		predict.setMapOutputValueClass(Text.class);
 		predict.setOutputKeyClass(NullWritable.class);
