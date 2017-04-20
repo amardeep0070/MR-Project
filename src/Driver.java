@@ -1,6 +1,3 @@
-package PreProcess;
-
-
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -16,8 +13,7 @@ import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
 
-import PreProcess.Predictor.PredictorMapper;
-import PreProcess.Predictor.PredictorReducer;
+
 
 public class Driver {
 	public static void main(String[] args) throws Exception {
@@ -74,12 +70,25 @@ public class Driver {
 		DistributedCache.addCacheFile(distributedFile1.toUri(),training.getConfiguration());
 		DistributedCache.addLocalFiles(training.getConfiguration(), distributedFile.toString());
 		DistributedCache.addLocalFiles(training.getConfiguration(), distributedFile1.toString());
+		Path distributedFile2 = new Path
+				(otherArgs[otherArgs.length - 1] + "/preProcess/part-r-00002");
+		Path distributedFile3 = new Path(otherArgs[otherArgs.length - 1] + "/preProcess/part-r-00003");
+
+		DistributedCache.addCacheFile(distributedFile2.toUri(),training.getConfiguration());
+		DistributedCache.addCacheFile(distributedFile3.toUri(),training.getConfiguration());
+		DistributedCache.addLocalFiles(training.getConfiguration(), distributedFile2.toString());
+		DistributedCache.addLocalFiles(training.getConfiguration(), distributedFile3.toString());
+		
+		Path distributedFile4 = new Path(otherArgs[otherArgs.length - 1] + "/preProcess/part-r-00004");
+
+		DistributedCache.addCacheFile(distributedFile4.toUri(),training.getConfiguration());
+		DistributedCache.addLocalFiles(training.getConfiguration(), distributedFile4.toString());
 
 		training.waitForCompletion(true);
 		Job predict = Job.getInstance(conf, "Predictor");
 		predict.setJarByClass(Driver.class);
-		predict.setMapperClass(PredictorMapper.class);
-		predict.setReducerClass(PredictorReducer.class);
+		predict.setMapperClass(Predictor.PredictorMapper.class);
+		predict.setReducerClass(Predictor.PredictorReducer.class);
 		//predict.setNumReduceTasks(1);
 		predict.setMapOutputKeyClass(IntWritable.class);
 		predict.setMapOutputValueClass(Text.class);
@@ -87,7 +96,7 @@ public class Driver {
 		predict.setOutputValueClass(Text.class);
 		predict.setInputFormatClass(SequenceFileInputFormat.class);
 
-		predict.addCacheFile(new Path("/tmp/unlabeled.csv.bz2").toUri());
+		predict.addCacheFile(new Path("s3://amardeep-mr/unlab/unlabeled.csv.bz2").toUri());
 		FileInputFormat.addInputPath(predict, new Path(otherArgs[otherArgs.length - 1] + "/Models"));
 		FileOutputFormat.setOutputPath(predict, new Path(otherArgs[otherArgs.length - 1] + "/Predictions"));
 
